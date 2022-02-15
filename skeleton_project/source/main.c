@@ -4,8 +4,6 @@
 #include <time.h>
 #include "driver/elevio.h"
 
-//small test comment
-
 int main(){
     elevio_init();
     
@@ -25,11 +23,6 @@ int main(){
         if(floor == N_FLOORS-1){
             elevio_motorDirection(DIRN_DOWN);
         }
-
-        
-
-        elevio_doorOpenLamp(5);
-
         
 
         switch (floor)
@@ -48,9 +41,8 @@ int main(){
             break;
         default:
             break;
-        }
+        }        
 
-    
         //This is useful, but should maybe be implemented in a function
         for(int f = 0; f < N_FLOORS; f++){
             for(int b = 0; b < N_BUTTONS; b++){
