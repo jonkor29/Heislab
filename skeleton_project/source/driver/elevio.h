@@ -26,17 +26,21 @@ void elevio_init(void);
 void elevio_motorDirection(MotorDirection dirn);
 
 // - - - LAMPS - - -
-//Lights up lamp at a certain floor. We assume value is 0/1 and ButtonType is wether the button is inside or outside the elevator
+//Lights up lamp of certain button. value = 0/1, ButtonType is wether the button is inside or outside the elevator. And floor is in range [0, 3]
 void elevio_buttonLamp(int floor, ButtonType button, int value);
-//TEST this func! Probably lights up floor indicator lamp
+//Probably lights up floor indicator lamp
 void elevio_floorIndicator(int floor);
+// When value is bigger then 0. the lamp turns on
 void elevio_doorOpenLamp(int value);
+// When value is bigger then 0. the lamp turns on
 void elevio_stopLamp(int value);
 
-//Unclear how this works... How will we get input from buttons? Polling?
+//Polls button specified by floor and buttontype. Return 1/0
 int elevio_callButton(int floor, ButtonType button);
-//
+//This polls the floorsensor. Returns -1 if between floors. Otherwise returns the floor number between [0, 3].
 int elevio_floorSensor(void);
+//Polls stupbutton. Return 0/1
 int elevio_stopButton(void);
+//Polls obstruction button. Returns 0/1
 int elevio_obstruction(void);
 
