@@ -26,7 +26,32 @@ int main(){
             elevio_motorDirection(DIRN_DOWN);
         }
 
+        
 
+        elevio_doorOpenLamp(5);
+
+        
+
+        switch (floor)
+        {
+        case 0:
+            elevio_floorIndicator(floor);
+            break;
+        case 1:
+            elevio_floorIndicator(floor);
+            break;
+        case 2:
+            elevio_floorIndicator(floor);
+            break;
+        case 3:
+            elevio_floorIndicator(floor);
+            break;
+        default:
+            break;
+        }
+
+    
+        //This is useful, but should maybe be implemented in a function
         for(int f = 0; f < N_FLOORS; f++){
             for(int b = 0; b < N_BUTTONS; b++){
                 int btnPressed = elevio_callButton(f, b);
@@ -39,7 +64,6 @@ int main(){
         } else {
             elevio_stopLamp(0);
         }
-        
         if(elevio_stopButton()){
             elevio_motorDirection(DIRN_STOP);
             break;
