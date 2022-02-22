@@ -22,7 +22,8 @@ typedef enum {
 void elevio_init(void);
 
 //MOTOR
-//This function runs the elevator up/down/stops it based on MotorDirection
+//This function runs the elevator up/down/stops it based on MotorDirection.
+//The motor will keep going until the function is called again with stop
 void elevio_motorDirection(MotorDirection dirn);
 
 // - - - LAMPS - - -

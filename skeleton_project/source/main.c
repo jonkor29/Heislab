@@ -7,6 +7,8 @@
 int main(){
     elevio_init();
     
+    /*
+    // - - - - - EXAMPLE PROGRAM - - - - - 
     printf("=== Example Program ===\n");
     printf("Press the stop button on the elevator panel to exit\n");
 
@@ -39,7 +41,7 @@ int main(){
         case 3:
             elevio_floorIndicator(floor);
             break;
-        default:
+        default: 
             break;
         }        
 
@@ -63,6 +65,8 @@ int main(){
         
         nanosleep(&(struct timespec){0, 20*1000*1000}, NULL);
     }
+    */
+
 
     return 0;
 }
