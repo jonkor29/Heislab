@@ -11,7 +11,7 @@
 
 static int sockfd;
 static pthread_mutex_t sockmtx;
-
+ 
 void elevio_init(void){
     char ip[16] = "localhost";
     char port[8] = "15657";
