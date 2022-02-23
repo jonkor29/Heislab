@@ -7,7 +7,7 @@
 #include "LinkedList.h"
 
 int main(){
-    elevio_init();
+    // elevio_init();
 
     Order down_from_floor_4 = {DOWN, 4};
     
@@ -67,6 +67,7 @@ int main(){
     append(&g_head, myOrder2);
     append(&g_head, myOrder3);
 
+
     //printf("g_head: %d", g_head); 
     printf("Ordretype: %d \n", down_from_floor_4.type);
     //printf("g_head: %d", g_head);
@@ -74,12 +75,20 @@ int main(){
     printf("g_head->order.type: %d\n", g_head->order.type);
     printf("g_head: %p \n", (void*) g_head);
 
-    delete_all(&g_head);
+    //delete_all(&g_head);
 
     printf("\n\n\nAFTER DELETION - :)\n\n\n");
     printf("g_head: %p \n", (void*) g_head);
 
+    //
+    
+    delete_order(&g_head, 3);
+    
 
+    printf("g_head->order.type: %d\n", g_head->order.type);
+    printf("g_head: %p \n", (void*) g_head);
+
+    delete_order(&g_head,2);
     
     /*
 
@@ -96,8 +105,9 @@ int main(){
     
     */
     
+    
     /*
-
+    
     //to avoid memory leak error
     for (int i = 0; i < 3; i++)
     {
@@ -105,8 +115,7 @@ int main(){
         g_head = g_head->next;
         free(temp);
     }
-
+    
     */
-
     return 0;
 }

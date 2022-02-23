@@ -38,7 +38,6 @@ void delete_all(Node** p_head) {
 //alternativ implementasjon, kortere men kanskje mindre lesbar, jobber direkte på den faktiske head pointeren
 //begge er testet og ser ut til å virke fint, mer litt mer testing skader ikke. Kanksje fint med en display-list funksjon.
 /*
-
 void delete_all(Node** p_head) {
     while(*p_head != NULL) {
         Node* temp = *p_head; //temp mp kanskje utenfor
@@ -47,5 +46,81 @@ void delete_all(Node** p_head) {
         temp = NULL;
     }
 }
-
 */
+
+
+void delete_order(Node** p_head, int current_floor){
+    /*
+
+    int cases = 0;
+    Node* number_of_cases= *p_head;
+    while(number_of_cases != NULL){
+        if (number_of_cases->order.floor== current_floor){
+            cases++; 
+        }
+        number_of_cases= number_of_cases->next;
+    }
+
+    Node* head= *p_head;
+    Node* previous = NULL;
+
+    if(head != NULL && head->order.floor== current_floor){
+        *p_head= head->next;
+        free(head);
+        head = *p_head;
+    }
+
+    while(head != NULL && head->order.floor!= current_floor){
+        previous= head;
+        head= head->next;
+    }
+
+    if(head !=NULL && head->order.floor==current_floor){
+        previous->next= head->next;
+        head->next= NULL;
+        free(head);
+    }
+    
+    */
+    
+    // Alternativ versjon.
+   
+    int to_be_fulfilled=1;
+    while (to_be_fulfilled)
+        {
+        Node* head= *p_head;
+        Node* previous = NULL;
+        while (1)
+            {
+            if(head != NULL && head->order.floor== current_floor)
+                {
+                *p_head= head->next;
+                free(head);
+                head = NULL;
+                break;
+                }
+            
+            while(head!= NULL && head->order.floor!=current_floor)
+                {
+                previous=head;
+                head=head->next;
+                }
+            
+            if(head != NULL && head->order.floor== current_floor)
+                {
+                previous->next=head->next;
+                free(head);
+                head= NULL;
+                break;
+                }
+            if(head == NULL)
+                {
+                to_be_fulfilled=0;
+                break;
+                }
+            }
+        
+        }
+    return;
+    // Alternativ versjon, slutt.
+}
