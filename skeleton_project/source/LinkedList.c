@@ -21,4 +21,31 @@ void append(Node** p_head, Order new_order) {
     last->next = p_new_node; //make the node that was last now point to the new node
 
     return;
-};
+}
+
+
+void delete_all(Node** p_head) {
+    Node* head = *p_head;
+    while(head != NULL) {
+        Node* temp = head;
+        head = head->next;
+        free(temp);
+        temp = NULL;
+    }
+    *p_head = NULL; // setter den faktiske head-pointeren lik NULL
+}
+
+//alternativ implementasjon, kortere men kanskje mindre lesbar, jobber direkte på den faktiske head pointeren
+//begge er testet og ser ut til å virke fint, mer litt mer testing skader ikke. Kanksje fint med en display-list funksjon.
+/*
+
+void delete_all(Node** p_head) {
+    while(*p_head != NULL) {
+        Node* temp = *p_head; //temp mp kanskje utenfor
+        *p_head = (*p_head)->next;
+        free(temp);
+        temp = NULL;
+    }
+}
+
+*/

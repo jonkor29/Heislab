@@ -11,3 +11,5 @@ typedef struct Node {
 
 //add Node to end of list
 void append(Node** p_head, Order new_order);
+//deletes all the nodes in the LinkedList
+void delete_all(Node** p_head);

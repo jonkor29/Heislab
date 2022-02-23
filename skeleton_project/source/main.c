@@ -70,8 +70,18 @@ int main(){
     //printf("g_head: %d", g_head); 
     printf("Ordretype: %d \n", down_from_floor_4.type);
     //printf("g_head: %d", g_head);
-    printf("g_head->order.type: %d", g_head->order.type);
+    printf("\n\n\nBEFORE DELETION\n\n\n");
+    printf("g_head->order.type: %d\n", g_head->order.type);
+    printf("g_head: %p \n", (void*) g_head);
 
+    delete_all(&g_head);
+
+    printf("\n\n\nAFTER DELETION - :)\n\n\n");
+    printf("g_head: %p \n", (void*) g_head);
+
+
+    
+    /*
 
     elevio_motorDirection(DIRN_UP);
 
@@ -84,7 +94,9 @@ int main(){
         }
     }
     
-
+    */
+    
+    /*
 
     //to avoid memory leak error
     for (int i = 0; i < 3; i++)
@@ -93,6 +105,8 @@ int main(){
         g_head = g_head->next;
         free(temp);
     }
+
+    */
 
     return 0;
 }
