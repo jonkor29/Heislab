@@ -57,15 +57,17 @@ int main(){
     */
 
     //testing, attention please
-    Order myOrder = {DOWN, 2};
-    Order myOrder2 = {UP, 2};
-    Order myOrder3 = {CAB, 3};
+    Order myOrder = {DOWN, SECOND_FLOOR};
+    Order myOrder2 = {UP, SECOND_FLOOR};
+    Order myOrder3 = {CAB, THIRD_FLOOR};
+    Order myOrder4 = {DOWN, FIRST_FLOOR};
 
     Node* g_head = NULL;
     
     append(&g_head, myOrder);
     append(&g_head, myOrder2);
     append(&g_head, myOrder3);
+    append(&g_head, myOrder4);
 
 
     //printf("g_head: %d", g_head); 
@@ -79,7 +81,7 @@ int main(){
 
     printf("\n\n\nAFTER DELETION - :)\n\n\n");
 
-    delete_order(&g_head, 2);
+    delete_floor(&g_head, SECOND_FLOOR);
     
     
 
