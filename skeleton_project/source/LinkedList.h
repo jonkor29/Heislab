@@ -14,4 +14,4 @@ void append(Node** p_head, Order new_order);
 //deletes all the nodes in the LinkedList
 void delete_all(Node** p_head);
 // Deletes the orders in the linkedlist that matches the floor. 
-void delete_order(Node** p_head, int current_floor);
+void delete_floor(Node** p_head, Floor current_floor);

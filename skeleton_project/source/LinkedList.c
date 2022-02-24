@@ -49,7 +49,7 @@ void delete_all(Node** p_head) {
 */
 
 
-void delete_order(Node** p_head, int current_floor){
+void delete_floor(Node** p_head, Floor current_floor){
     /*
 
     int cases = 0;
@@ -85,40 +85,32 @@ void delete_order(Node** p_head, int current_floor){
     
     // Alternativ versjon.
    
-    while (1)
-    {
-        Node* temp = *p_head;
-        Node* prev;
-        while (1)
+    Node* temp = *p_head;
+    Node* prev;
+    
+    while(temp != NULL && temp->order.floor == current_floor)
         {
-            if(temp != NULL && temp->order.floor== current_floor)  //if the list is not empty and the first item 
-                {
-                *p_head= temp->next;
-                free(temp);
-                temp = NULL;
-                break;
-                }
-            
-            while(temp!= NULL && temp->order.floor!=current_floor)
-            {
-                prev=temp;
-                temp=temp->next;
-            }
-            
-            if(temp != NULL && temp->order.floor== current_floor)
-            {
-                prev->next=temp->next;
-                free(temp);
-                temp= NULL;
-                break;
-            }
-            if(temp == NULL) 
-            {
-                return;    
-            }
+        *p_head= temp->next;
+        free(temp);
+        temp = *p_head;
         }
-        
+
+    while (temp != NULL)
+    {   
+        while(temp != NULL && temp->order.floor!=current_floor)
+        {
+            prev=temp;
+            temp=temp->next;
+        }
+
+        if(temp == NULL) 
+            return;
+
+        prev->next=temp->next;
+        free(temp);
+        temp= prev->next;    
     }
+
     return;
     
     
