@@ -15,3 +15,5 @@ void append(Node** p_head, Order new_order);
 void delete_all(Node** p_head);
 // Deletes the orders in the linkedlist that matches the floor. 
 void delete_floor(Node** p_head, Floor current_floor);
+
+void print_list(Node* node);

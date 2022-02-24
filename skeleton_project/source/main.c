@@ -77,19 +77,24 @@ int main(){
     printf("g_head->order.type: %d\n", g_head->order.type);
     printf("g_head: %p \n", (void*) g_head);
 
+    print_list(g_head);
+
     //delete_all(&g_head);
 
     printf("\n\n\nAFTER DELETION - :)\n\n\n");
 
     delete_floor(&g_head, SECOND_FLOOR);
     
-    
+    print_list(g_head);
+
 
     printf("g_head->order.type: %d\n", g_head->order.type);
     printf("g_head: %p \n", (void*) g_head);
 
     //delete_order(&g_head,3);
     delete_all(&g_head);
+
+    print_list(g_head);
     
     /*
 

@@ -48,7 +48,7 @@ void delete_all(Node** p_head) {
 }
 */
 
-
+//maybe this should also be called delete_all
 void delete_floor(Node** p_head, Floor current_floor){
     /*
 
@@ -115,4 +115,15 @@ void delete_floor(Node** p_head, Floor current_floor){
     
     
     // Alternativ versjon, slutt.
+}
+
+
+void print_list(Node* node) {
+    printf("[");
+    while(node != NULL) 
+    {
+        printf(" (type: %d, floor: %d) ,", node->order.type, node->order.floor);
+        node = node->next;
+    }
+    printf("]");
 }
