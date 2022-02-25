@@ -5,9 +5,14 @@
 #include "driver/elevio.h"
 #include "Order.h"
 #include "LinkedList.h"
+#include "FiniteStateMachine.h"
 
 int main(){
-    // elevio_init();
+    elevio_init();
+
+    run_elevator();
+
+    printf("floorSensor(): %d", elevio_floorSensor());
 
     Order down_from_floor_4 = {DOWN, 4};
     
@@ -60,7 +65,9 @@ int main(){
     Order myOrder = {DOWN, SECOND_FLOOR};
     Order myOrder2 = {UP, SECOND_FLOOR};
     Order myOrder3 = {CAB, THIRD_FLOOR};
-    Order myOrder4 = {DOWN, FIRST_FLOOR};
+    Order myOrder4 = {DOWN, SECOND_FLOOR};
+    Order myOrder5 = {UP, THIRD_FLOOR};
+    Order myOrder6 = {CAB, SECOND_FLOOR};
 
     Node* g_head = NULL;
     
@@ -68,6 +75,8 @@ int main(){
     append(&g_head, myOrder2);
     append(&g_head, myOrder3);
     append(&g_head, myOrder4);
+    append(&g_head, myOrder5);
+    append(&g_head, myOrder6);
 
 
     //printf("g_head: %d", g_head); 

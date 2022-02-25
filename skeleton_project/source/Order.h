@@ -3,7 +3,6 @@
 #include "driver/elevio.h"
 
 typedef enum {
-    NONE    = -1, 
     UP      = 0,
     DOWN    = 1,
     CAB     = 2

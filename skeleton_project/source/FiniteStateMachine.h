@@ -13,4 +13,5 @@ typedef enum {
     DOORS_OPEN = 3
 } State;
 
-void init();
+void init_FSM();
+void run_elevator();
