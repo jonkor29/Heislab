@@ -16,4 +16,6 @@ void delete_all(Node** p_head);
 // Deletes the orders in the linkedlist that matches the floor. 
 void delete_floor(Node** p_head, Floor current_floor);
 
+int contains_order(Node** p_head, Order current_order);
+
 void print_list(Node* node);

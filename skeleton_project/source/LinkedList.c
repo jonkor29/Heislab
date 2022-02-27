@@ -89,11 +89,11 @@ void delete_floor(Node** p_head, Floor current_floor){
     Node* prev;
     
     while(temp != NULL && temp->order.floor == current_floor)
-        {
+    {
         *p_head= temp->next;
         free(temp);
         temp = *p_head;
-        }
+    }
 
     while (temp != NULL)
     {   
@@ -115,6 +115,27 @@ void delete_floor(Node** p_head, Floor current_floor){
     
     
     // Alternativ versjon, slutt.
+}
+
+int contains_order(Node** p_head, Order current_order) {
+    
+    Node* temp = *p_head;
+    Node* prev;
+    
+    while(temp != NULL && (temp->order.floor!=current_order.floor || temp->order.type != current_order.type))
+    {
+        prev=temp;
+        temp=temp->next;
+    }
+
+    if(temp == NULL) 
+        return 0;
+    
+    if (temp->order.floor==current_order.floor && temp->order.type == current_order.type) {
+        return 1;
+    }  
+
+    return 0;
 }
 
 
