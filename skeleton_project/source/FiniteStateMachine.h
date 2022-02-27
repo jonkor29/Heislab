@@ -1,5 +1,6 @@
 #pragma once
 
+#include "LinkedList.h"
 
 
 //tanke: kan lage en buttonAndSensorPoller klasse som poller alt og returnerer en struct InputFSM som input til FSM
@@ -14,4 +15,5 @@ typedef enum {
 } State;
 
 void init_FSM();
+void look_for_order(Node** p_head); //take in pointer to list, and use list funcs to add new order if btn pressed and order not already in list
 void run_elevator();
