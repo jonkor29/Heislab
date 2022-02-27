@@ -68,10 +68,11 @@ void run_elevator() {
     //update_current_order
 
     while (1) {
-
         switch (current_state)
         {
         case IDLE:
+            //do this in state
+            //if condition, update state
             break;
         
         case MOVING_DOWN:
@@ -87,6 +88,5 @@ void run_elevator() {
         default:
             break;
         }
-
     }
 }

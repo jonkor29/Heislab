@@ -15,5 +15,5 @@ typedef enum {
 } State;
 
 void init_FSM();
-void look_for_order(Node** p_head); //take in pointer to list, and use list funcs to add new order if btn pressed and order not already in list
+void look_for_and_add_order(Node** p_head); //take in pointer to list, and use list funcs to add new order if btn pressed and order not already in list
 void run_elevator();
