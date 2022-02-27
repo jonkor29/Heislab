@@ -8,14 +8,11 @@
 #include "FiniteStateMachine.h"
 
 int main(){
-    elevio_init();
+    elevio_init(); //spør studass: hvorfor står det at denne ikke blir åpnet?
 
     run_elevator();
 
-    printf("floorSensor(): %d", elevio_floorSensor());
-
-    Order down_from_floor_4 = {DOWN, 4};
-    
+    //printf("floorSensor(): %d", elevio_floorSensor());    
 
 
     //  - - - - - EXAMPLE PROGRAM - - - - -
@@ -61,32 +58,69 @@ int main(){
 
     */
 
+
+
+
+
     //testing, attention please
+
+    /* 
+    
+    - - - -  - - - - - - -TESTCODE BELOW - - - - - - - - -  - -
+
     Order myOrder = {DOWN, SECOND_FLOOR};
     Order myOrder2 = {UP, SECOND_FLOOR};
     Order myOrder3 = {CAB, THIRD_FLOOR};
     Order myOrder4 = {DOWN, SECOND_FLOOR};
     Order myOrder5 = {UP, THIRD_FLOOR};
     Order myOrder6 = {CAB, SECOND_FLOOR};
+    Order myOrder7 = {CAB, FOURTH_FLOOR};
+    Order test_update_funk;
 
     Node* g_head = NULL;
-    
+
+
+    printf("\n\n\nlook_for_order():\n\n\n");
+
     append(&g_head, myOrder);
     append(&g_head, myOrder2);
     append(&g_head, myOrder3);
+
+    update_current_order(&g_head,&test_update_funk);
+    append(&g_head, test_update_funk);
+
+    print_list(g_head);
+
+    printf("Before:\n"); 
+    print_list(g_head);
+
+    while(1) {
+        look_for_and_add_order(&g_head);
+        if (elevio_stopButton()) 
+        {
+            break;
+        }
+    }
+    
+    printf("\nAfter:\n"); print_list(g_head); printf("\n\n\n");
+    
     append(&g_head, myOrder4);
     append(&g_head, myOrder5);
     append(&g_head, myOrder6);
 
 
     //printf("g_head: %d", g_head); 
-    printf("Ordretype: %d \n", down_from_floor_4.type);
     //printf("g_head: %d", g_head);
     printf("\n\n\nBEFORE DELETION\n\n\n");
     printf("g_head->order.type: %d\n", g_head->order.type);
     printf("g_head: %p \n", (void*) g_head);
 
     print_list(g_head);
+
+    if (contains_order(&g_head, myOrder6) && contains_order(&g_head, myOrder)) {
+        printf("contains order 6 and 1");
+    }
+    printf("contains_order(&g_head, myOrder7): %d", contains_order(&g_head, myOrder7));
 
     //delete_all(&g_head);
 
@@ -100,10 +134,18 @@ int main(){
     printf("g_head->order.type: %d\n", g_head->order.type);
     printf("g_head: %p \n", (void*) g_head);
 
+    
+    
     //delete_order(&g_head,3);
     delete_all(&g_head);
 
     print_list(g_head);
+
+
+    - - - -  - - - - - - -TESTCODE ABOVE - - - - - - - - -  - -
+
+    */
+
     
     /*
 
@@ -132,5 +174,6 @@ int main(){
     }
     
     */
+
     return 0;
 }
