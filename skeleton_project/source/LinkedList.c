@@ -148,3 +148,13 @@ void print_list(Node* node) {
     }
     printf("]");
 }
+
+
+void update_current_order(Node** p_head, Order* current_order){
+    Node* temp = *p_head;
+    if (temp!= NULL){
+        *current_order= temp->order;
+        *p_head = (*p_head)->next;
+        free(temp);
+    }
+}
