@@ -1,6 +1,7 @@
 #include "FiniteStateMachine.h"
 #include "driver/elevio.h"
 #include "Order.h"
+#include <time.h>
 
 void init_FSM() {
     
@@ -69,7 +70,7 @@ void run_elevator() {
 
     init_FSM();
 
-    while (state != MOVING_UP) {  
+    while (1) {  
         //kanskje denne if-statementen kan flyttes til inni hver state for raskere oppdatering?
         if (elevio_floorSensor() != -1) 
         {
@@ -110,11 +111,12 @@ void run_elevator() {
                 if (floor_sensor_reading != -1) 
                 {    
                     elevio_floorIndicator(floor_sensor_reading);
+                    current_floor = (Floor)(floor_sensor_reading);
   
-                    Order eligible_order1 = {DOWN, (Floor)floor_sensor_reading};
-                    Order eligible_order2 = {CAB, (Floor)floor_sensor_reading}; 
+                    Order down_order = {DOWN, current_floor};
+                    Order cab_order = {CAB, current_floor}; 
                     
-                    if (current_order.floor == floor_sensor_reading || contains_order(&head, eligible_order1) || contains_order(&head, eligible_order2)) 
+                    if (current_order.floor == floor_sensor_reading || contains_order(&head, down_order) || contains_order(&head, cab_order)) 
                     {
                         state = DOORS_OPEN;
                             
@@ -128,13 +130,52 @@ void run_elevator() {
         
         case MOVING_UP:
             elevio_motorDirection(DIRN_UP);
+ 
+            while (state == MOVING_UP) 
+            {   
+                look_for_and_add_order(&head);
+                int floor_sensor_reading = elevio_floorSensor();
+                if (floor_sensor_reading != -1) 
+                {    
+                    elevio_floorIndicator(floor_sensor_reading);
+                    current_floor = (Floor)(floor_sensor_reading);
+  
+                    Order up_order = {UP, current_floor};
+                    Order cab_order = {CAB, current_floor}; 
+                    
+                    if (current_order.floor == floor_sensor_reading || contains_order(&head, up_order) || contains_order(&head, cab_order)) 
+                    {
+                        state = DOORS_OPEN;
+                            
+                    } 
+                } 
+            }
 
             
             break;
 
         case DOORS_OPEN:
             elevio_motorDirection(DIRN_STOP);
-            elevio_doorOpenLamp(1);            
+            elevio_doorOpenLamp(1);                               
+            delete_floor(&head, current_floor);
+ 
+            time_t start, end;
+            start = clock();
+            while (state == DOORS_OPEN)
+            {
+                look_for_and_add_order(&head);
+
+                end = clock();
+                int time_elapsed = (end-start)/CLOCKS_PER_SEC;
+                
+                if (time_elapsed >= 3) 
+                {
+                    state = IDLE;  
+                }
+            }
+            
+            elevio_doorOpenLamp(0);
+
             break;
         
         
