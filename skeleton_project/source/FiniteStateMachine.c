@@ -165,6 +165,12 @@ void run_elevator() {
             {
                 look_for_and_add_order(&head);
 
+                if (elevio_obstruction()) 
+                {
+                    start = clock();
+                    printf("elevio_obstruction()");
+                }
+
                 end = clock();
                 int time_elapsed = (end-start)/CLOCKS_PER_SEC;
                 
@@ -172,6 +178,7 @@ void run_elevator() {
                 {
                     state = IDLE;  
                 }
+                
             }
             
             elevio_doorOpenLamp(0);
