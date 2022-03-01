@@ -24,7 +24,7 @@ void look_for_and_add_order(Node** p_head) {
                 Order new_order;
                 new_order.floor = (Floor)f; //this cast may be problematic
                 
-                switch (b)
+                switch (b) //this may be replaced by a single line if we cast b from int to ordertype, readability?
                 {
                 case BUTTON_HALL_UP:
                     new_order.type = UP;
@@ -58,6 +58,46 @@ if (!contains_order(p_head, current_order))
 
 */
 
+void stopButton_pressed(State* current_state, Node** p_head){
+    elevio_motorDirection(DIRN_STOP);
+    delete_all(p_head);
+    elevio_stopLamp(1);
+    //time_t start;
+    //start = time(NULL);
+    while (elevio_stopButton()){
+        //start = time(NULL);
+        if (elevio_floorSensor() != -1){
+            *current_state = DOORS_OPEN;
+            elevio_doorOpenLamp(1);
+        }
+        else if (elevio_floorSensor() == -1){
+            
+        }
+    }
+    elevio_stopLamp(0);
+}
+
+
+
+
+void update_order_lights(Node** p_head) {
+    for(int f = 0; f < N_FLOORS; f++) 
+    {
+        for(int b = 0; b < N_BUTTONS; b++)
+        {            
+            Order order;
+            order.floor = (Floor)f; //this cast may be problematic
+            order.type = (OrderType)b; //what is more readable, this or switch-case?
+            
+            if (contains_order(p_head, order)) 
+            {
+                elevio_buttonLamp(f, (ButtonType)order.type, 1);                
+            } else {
+                elevio_buttonLamp(f, (ButtonType)order.type, 0);
+            }
+        }
+    }
+}
 
 
 //main loop
@@ -80,10 +120,13 @@ void run_elevator() {
         switch (state) 
         {
         case IDLE:
-            //elevio_motorDirection(DIRN_STOP);
+
             while (state == IDLE)
             {
+                
                 look_for_and_add_order(&head);
+                update_order_lights(&head);
+
                 if (head != NULL) 
                 {
                     //update_current_order(&head, &current_order);
@@ -97,7 +140,7 @@ void run_elevator() {
                     else if(current_order.floor == current_floor){
                         state = DOORS_OPEN;
                     }
-                }               
+                }          
             }
             break;
         
@@ -107,6 +150,8 @@ void run_elevator() {
             while (state == MOVING_DOWN) 
             {   
                 look_for_and_add_order(&head);
+                update_order_lights(&head);
+
                 int floor_sensor_reading = elevio_floorSensor();
                 if (floor_sensor_reading != -1) 
                 {    
@@ -123,9 +168,6 @@ void run_elevator() {
                     } 
                 } 
             } 
-            
-            
-
             break;
         
         case MOVING_UP:
@@ -134,6 +176,8 @@ void run_elevator() {
             while (state == MOVING_UP) 
             {   
                 look_for_and_add_order(&head);
+                update_order_lights(&head);
+
                 int floor_sensor_reading = elevio_floorSensor();
                 if (floor_sensor_reading != -1) 
                 {    
@@ -148,38 +192,51 @@ void run_elevator() {
                         state = DOORS_OPEN;
                             
                     } 
-                } 
+                }  
             }
-
-            
             break;
 
         case DOORS_OPEN:
             elevio_motorDirection(DIRN_STOP);
             elevio_doorOpenLamp(1);                               
             delete_floor(&head, current_floor);
+            update_order_lights(&head);
  
             time_t start, end;
-            start = clock();
+            //start =  clock();
+            start = time(NULL);
             while (state == DOORS_OPEN)
             {
                 look_for_and_add_order(&head);
+                update_order_lights(&head);
+
+                /*
+                
+                if (elevio_stopButton()){
+                    stopButton_pressed(&state, &head);
+                    start = time(NULL);
+                }
+                
+                */  
 
                 if (elevio_obstruction()) 
                 {
-                    start = clock();
-                    printf("elevio_obstruction()");
+                    //start = clock();
+                    start = time(NULL);
+                    printf("elevio_obstriction():%d", elevio_obstruction());
                 }
-
-                end = clock();
-                int time_elapsed = (end-start)/CLOCKS_PER_SEC;
+ 
+                //end = clock();
+                end = time(NULL);
+                double time_elapsed = (end-start); ///CLOCKS_PER_SEC;
                 
                 if (time_elapsed >= 3) 
                 {
-                    state = IDLE;  
+                    state = IDLE;
+                    break;  
                 }
-                
-            }
+
+            } 
             
             elevio_doorOpenLamp(0);
 
@@ -191,4 +248,7 @@ void run_elevator() {
         }
     }
     delete_all(&head);
+    update_order_lights(&head);
 }
+
+

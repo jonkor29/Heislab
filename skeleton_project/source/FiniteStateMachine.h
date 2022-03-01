@@ -17,3 +17,5 @@ typedef enum {
 void init_FSM();
 void look_for_and_add_order(Node** p_head); //take in pointer to list, and use list funcs to add new order if btn pressed and order not already in list
 void run_elevator();
+void stopButton_pressed(State* current_state, Node** p_head); 
+void update_order_lights(Node** p_head);
