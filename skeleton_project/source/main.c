@@ -8,7 +8,7 @@
 #include "FiniteStateMachine.h"
 
 int main(){
-    elevio_init(); //spør studass: hvorfor står det at denne ikke blir åpnet?
+    elevio_init(); //spoor studass: hvorfor staar det at denne ikke blir aapnet?
 
     run_elevator();
 

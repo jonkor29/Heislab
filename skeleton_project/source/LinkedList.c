@@ -2,7 +2,6 @@
 
 //Dropper p-prefiks foran ord som head, last og next fordi det er godt kjent for programmerere at disse er pekere. Dette for å unngå forvirring.
 void append(Node** p_head, Order new_order) {
-    
     Node* p_new_node = (Node*) malloc(sizeof(Node)); //allocate new node
     Node* last = *p_head; //set last equal to head
     
@@ -24,7 +23,7 @@ void append(Node** p_head, Order new_order) {
 }
 
 
-void delete_all(Node** p_head) {
+void delete_all_orders(Node** p_head) {
     Node* head = *p_head;
     while(head != NULL) {
         Node* temp = head;
@@ -35,76 +34,25 @@ void delete_all(Node** p_head) {
     *p_head = NULL; // setter den faktiske head-pointeren lik NULL
 }
 
-//alternativ implementasjon, kortere men kanskje mindre lesbar, jobber direkte på den faktiske head pointeren
-//begge er testet og ser ut til å virke fint, mer litt mer testing skader ikke. Kanksje fint med en display-list funksjon.
-/*
-void delete_all(Node** p_head) {
-    while(*p_head != NULL) {
-        Node* temp = *p_head; //temp mp kanskje utenfor
-        *p_head = (*p_head)->next;
-        free(temp);
-        temp = NULL;
-    }
-}
-*/
-
-//maybe this should also be called delete_all
-void delete_floor(Node** p_head, Floor current_floor){
-    /*
-
-    int cases = 0;
-    Node* number_of_cases= *p_head;
-    while(number_of_cases != NULL){
-        if (number_of_cases->order.floor== current_floor){
-            cases++; 
-        }
-        number_of_cases= number_of_cases->next;
-    }
-
-    Node* head= *p_head;
-    Node* previous = NULL;
-
-    if(head != NULL && head->order.floor== current_floor){
-        *p_head= head->next;
-        free(head);
-        head = *p_head;
-    }
-
-    while(head != NULL && head->order.floor!= current_floor){
-        previous= head;
-        head= head->next;
-    }
-
-    if(head !=NULL && head->order.floor==current_floor){
-        previous->next= head->next;
-        head->next= NULL;
-        free(head);
-    }
-    
-    */
-    
-    // Alternativ versjon.
-   
+void delete_orders(Node** p_head, Floor current_floor) {
     Node* temp = *p_head;
     Node* prev;
     
-    while(temp != NULL && temp->order.floor == current_floor)
-    {
+    while(temp != NULL && temp->order.floor == current_floor) {
         *p_head= temp->next;
         free(temp);
         temp = *p_head;
     }
 
-    while (temp != NULL)
-    {   
-        while(temp != NULL && temp->order.floor!=current_floor)
-        {
+    while (temp != NULL) {   
+        while(temp != NULL && temp->order.floor!=current_floor) {
             prev=temp;
             temp=temp->next;
         }
 
-        if(temp == NULL) 
+        if(temp == NULL) {
             return;
+        }
 
         prev->next=temp->next;
         free(temp);
@@ -112,9 +60,6 @@ void delete_floor(Node** p_head, Floor current_floor){
     }
 
     return;
-    
-    
-    // Alternativ versjon, slutt.
 }
 
 int contains_order(Node** p_head, Order current_order) {
@@ -122,15 +67,15 @@ int contains_order(Node** p_head, Order current_order) {
     Node* temp = *p_head;
     Node* prev;
     
-    while(temp != NULL && (temp->order.floor!=current_order.floor || temp->order.type != current_order.type))
-    {
+    while(temp != NULL && (temp->order.floor!=current_order.floor || temp->order.type != current_order.type)) {
         prev=temp;
         temp=temp->next;
     }
 
-    if(temp == NULL) 
+    if(temp == NULL) {
         return 0;
-    
+    }
+
     if (temp->order.floor==current_order.floor && temp->order.type == current_order.type) {
         return 1;
     }  
@@ -141,8 +86,7 @@ int contains_order(Node** p_head, Order current_order) {
 
 void print_list(Node* node) {
     printf("[");
-    while(node != NULL) 
-    {
+    while(node != NULL) {
         printf(" (type: %d, floor: %d) ,", node->order.type, node->order.floor);
         node = node->next;
     }
@@ -150,8 +94,3 @@ void print_list(Node* node) {
 }
 
 
-void update_current_order(Node** p_head, Order* current_order){
-    if ((*p_head)!= NULL){
-        *current_order= (*p_head)->order;
-    }
-}
