@@ -4,6 +4,7 @@
 #include <time.h>
 
 void init_FSM() {
+    elevio_doorOpenLamp(0);
     elevio_motorDirection(DIRN_DOWN);
     while(elevio_floorSensor() == -1) { 
 
@@ -69,7 +70,9 @@ void run_elevator() {
     Floor current_floor;
     State prev_state = IDLE;
 
+    update_order_lights(&head);    
     init_FSM();
+    
 
     while (1) {  
         //kanskje denne if-statementen kan flyttes til inni hver state for raskere oppdatering?

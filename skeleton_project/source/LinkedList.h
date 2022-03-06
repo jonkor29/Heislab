@@ -1,6 +1,6 @@
 #pragma once
 
-#include <stdio.h> 
+#include <stdio.h>
 #include <stdlib.h>
 #include "Order.h"
 
