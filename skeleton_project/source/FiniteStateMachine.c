@@ -46,38 +46,6 @@ void look_for_and_add_order(Node** p_head) {
     }
 }
 
-/*
-suggestion to split up look_for_and_add_order
-
-update_order(Order* current_order);
-
-if (!contains_order(p_head, current_order)) 
-    {
-        append(p_head, current_order);
-    }
-
-*/
-
-void stopButton_pressed(State* current_state, Node** p_head){
-    elevio_motorDirection(DIRN_STOP);
-    delete_all(p_head);
-    elevio_stopLamp(1); 
-    while (elevio_stopButton()){
-        if (elevio_floorSensor() != -1){
-            *current_state = DOORS_OPEN;
-            elevio_doorOpenLamp(1);
-        }
-        else if (elevio_floorSensor() == -1){
-            *current_state = IDLE;
-            elevio_doorOpenLamp(0);
-        }
-    }
-    elevio_stopLamp(0);
-}
-
-  
-
-
 void update_order_lights(Node** p_head) {
     for(int f = 0; f < N_FLOORS; f++) 
     {
@@ -138,6 +106,21 @@ void run_elevator() {
                     }
                     else if(current_order.floor == current_floor){
                         state = DOORS_OPEN;
+                
+                        switch (prev_state){
+
+                        case MOVING_DOWN:
+                            state = MOVING_UP;
+                            break;
+                        case MOVING_UP:
+                            state = MOVING_DOWN;
+                            break;
+                        case DOORS_OPEN:
+                            state = DOORS_OPEN;
+                            break;
+                        default:
+                            break;
+                        }
                     }
                 }  
                 if (elevio_stopButton()){
@@ -147,6 +130,7 @@ void run_elevator() {
             break;
         
         case MOVING_DOWN:
+            prev_state = MOVING_DOWN; 
             elevio_motorDirection(DIRN_DOWN);
  
             while (state == MOVING_DOWN) 
@@ -176,6 +160,7 @@ void run_elevator() {
             break;
         
         case MOVING_UP:
+            prev_state = MOVING_UP;
             elevio_motorDirection(DIRN_UP);
  
             while (state == MOVING_UP) 
@@ -204,6 +189,7 @@ void run_elevator() {
             break; 
 
         case DOORS_OPEN:
+            prev_state = DOORS_OPEN;
             elevio_motorDirection(DIRN_STOP);
             elevio_doorOpenLamp(1);                               
             delete_floor(&head, current_floor);
@@ -247,7 +233,7 @@ void run_elevator() {
         
         case EMERGENCY_STOP:
             elevio_motorDirection(DIRN_STOP);
-            delete_all(&head);
+            delete_all(&head); 
             elevio_stopLamp(1);
 
             if(elevio_floorSensor() != -1)
