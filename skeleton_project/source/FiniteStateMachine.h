@@ -11,7 +11,8 @@ typedef enum {
     IDLE = 0,
     MOVING_DOWN = 1,
     MOVING_UP = 2,
-    DOORS_OPEN = 3
+    DOORS_OPEN = 3,
+    EMERGENCY_STOP = 4
 } State;
 
 void init_FSM();

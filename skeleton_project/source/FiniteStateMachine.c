@@ -61,7 +61,7 @@ if (!contains_order(p_head, current_order))
 void stopButton_pressed(State* current_state, Node** p_head){
     elevio_motorDirection(DIRN_STOP);
     delete_all(p_head);
-    elevio_stopLamp(1);
+    elevio_stopLamp(1); 
     while (elevio_stopButton()){
         if (elevio_floorSensor() != -1){
             *current_state = DOORS_OPEN;
@@ -75,7 +75,7 @@ void stopButton_pressed(State* current_state, Node** p_head){
     elevio_stopLamp(0);
 }
 
-
+  
 
 
 void update_order_lights(Node** p_head) {
@@ -104,6 +104,7 @@ void run_elevator() {
     Node* head = NULL;
     Order current_order;
     Floor current_floor;
+    State prev_state = IDLE;
     //update_current_order
 
     init_FSM();
@@ -127,7 +128,7 @@ void run_elevator() {
 
                 if (head != NULL) 
                 {
-                    //update_current_order(&head, &current_order);
+                    
                     current_order = (*head).order;
                     if (current_order.floor < current_floor){
                         state = MOVING_DOWN;
@@ -140,7 +141,7 @@ void run_elevator() {
                     }
                 }  
                 if (elevio_stopButton()){
-                    stopButton_pressed(&state, &head);
+                    state = EMERGENCY_STOP;
                 }        
             }
             break;
@@ -169,7 +170,7 @@ void run_elevator() {
                     } 
                 } 
                 if (elevio_stopButton()){
-                    stopButton_pressed(&state, &head);
+                    state = EMERGENCY_STOP;
                 } 
             } 
             break;
@@ -193,15 +194,14 @@ void run_elevator() {
                     
                     if (current_order.floor == floor_sensor_reading || contains_order(&head, up_order) || contains_order(&head, cab_order)) 
                     {
-                        state = DOORS_OPEN;
-                            
+                        state = DOORS_OPEN;     
                     } 
                 } 
                 if (elevio_stopButton()){
-                    stopButton_pressed(&state, &head);
+                    state =  EMERGENCY_STOP;
                 }  
             }
-            break;
+            break; 
 
         case DOORS_OPEN:
             elevio_motorDirection(DIRN_STOP);
@@ -218,7 +218,7 @@ void run_elevator() {
                 update_order_lights(&head);
                 
                 if (elevio_stopButton()){
-                    stopButton_pressed(&state, &head);
+                    state = EMERGENCY_STOP;
                     start = time(NULL);
                 }
 
@@ -226,7 +226,6 @@ void run_elevator() {
                 {
                     //start = clock();
                     start = time(NULL);
-                    printf("elevio_obstriction():%d", elevio_obstruction());
                 }
  
                 //end = clock();
@@ -246,6 +245,30 @@ void run_elevator() {
             break;
         
         
+        case EMERGENCY_STOP:
+            elevio_motorDirection(DIRN_STOP);
+            delete_all(&head);
+            elevio_stopLamp(1);
+
+            if(elevio_floorSensor() != -1)
+            {
+                elevio_doorOpenLamp(1);
+                state = DOORS_OPEN; 
+            } 
+            else if(elevio_floorSensor() == -1)
+            {
+                elevio_doorOpenLamp(0);
+                state = IDLE;
+            }
+            
+            while(elevio_stopButton()){
+
+            }
+
+            elevio_stopLamp(0);
+
+            break; 
+
         default:
             break;
         }
