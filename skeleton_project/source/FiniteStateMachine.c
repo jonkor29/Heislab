@@ -20,12 +20,12 @@ void look_for_and_add_order(Node** p_head) {
             if (btnPressed) {
                 Order new_order;
                 new_order.floor = (Floor)f; //Is this cast problematic? Not readable?
-                new_order.type = (OrderType)b;
+                new_order.type = (ButtonType)b;
                 
                 
                 /*
 
-                switch (b) //this may be replaced by a single line if we cast b from int to ordertype, readability?
+                switch (b) //this may be replaced by a single line if we cast b from int to ButtonType, readability?
                 {
                 case BUTTON_HALL_UP:
                     new_order.type = UP;
@@ -55,12 +55,12 @@ void update_order_lights(Node** p_head) {
         for(int b = 0; b < N_BUTTONS; b++) {            
             Order order;
             order.floor = (Floor)f; //this cast may be problematic
-            order.type = (OrderType)b; //what is more readable, this or switch-case?
+            order.type = (ButtonType)b; //what is more readable, this or switch-case?
             
             if (contains_order(p_head, order)) {
-                elevio_buttonLamp(f, (ButtonType)order.type, 1);                
+                elevio_buttonLamp(f, order.type, 1);                
             } else {
-                elevio_buttonLamp(f, (ButtonType)order.type, 0);
+                elevio_buttonLamp(f, order.type, 0);
             }
         }
     }
@@ -134,8 +134,8 @@ void run_elevator() {
                     elevio_floorIndicator(floor_sensor_reading);
                     current_floor = (Floor)(floor_sensor_reading);
   
-                    Order down_order = {DOWN, current_floor};
-                    Order cab_order = {CAB, current_floor}; 
+                    Order down_order = {BUTTON_HALL_DOWN, current_floor};
+                    Order cab_order = {BUTTON_CAB, current_floor}; 
                     
                     if (current_order.floor == floor_sensor_reading || contains_order(&head, down_order) || contains_order(&head, cab_order)) {
                         state = DOORS_OPEN;     
@@ -154,14 +154,14 @@ void run_elevator() {
                 look_for_and_add_order(&head);
                 update_order_lights(&head);
 
-                int floor_sensor_reading = elevio_floorSensor();
+                int floor_sensor_reading = elevio_floorSensor(); //hva er best her? sample en gang eller flere?
                 if (floor_sensor_reading != -1) {
                     prev_state = MOVING_UP;    
                     elevio_floorIndicator(floor_sensor_reading);
                     current_floor = (Floor)(floor_sensor_reading);
   
-                    Order up_order = {UP, current_floor};
-                    Order cab_order = {CAB, current_floor}; 
+                    Order up_order = {BUTTON_HALL_UP, current_floor};
+                    Order cab_order = {BUTTON_CAB, current_floor}; 
                     
                     if (current_order.floor == floor_sensor_reading || contains_order(&head, up_order) || contains_order(&head, cab_order)) {
                         state = DOORS_OPEN;     
@@ -222,7 +222,7 @@ void run_elevator() {
             }
             
             while(elevio_stopButton()){
-            
+                
             }
 
             elevio_stopLamp(0);
@@ -235,5 +235,3 @@ void run_elevator() {
     delete_all_orders(&head);
     update_order_lights(&head);
 }
-
-
