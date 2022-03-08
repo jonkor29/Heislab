@@ -6,12 +6,26 @@
 #include "Order.h"
 #include "LinkedList.h"
 #include "FiniteStateMachine.h"
+#include <errno.h>
+#include <string.h>
 
 
 int main(){
-    elevio_init(); //spoor studass: hvorfor staar det at denne ikke blir aapnet?
+    
+    elevio_init(); //spoor studass: hvorfor staar det at denne ikke blir aapnet
+    /*
+    while(1){
 
-    run_elevator();
+        
+        run_elevator();
+        void (*run_elevator_pointer)  = &run_elevator;
+        if(run_elevator_pointer==NULL){
+             printf("Value of errno: %d , %s.", errno, strerror(errno));
+        }
+
+    }
+    */
+   run_elevator();
 
     //printf("floorSensor(): %d", elevio_floorSensor());    
 
