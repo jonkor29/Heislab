@@ -82,7 +82,6 @@ void run_elevator() {
         case IDLE:
 
             while (state == IDLE) {
-                
                 look_for_and_add_order(&head);
                 update_order_lights(&head);
 
@@ -215,7 +214,6 @@ void run_elevator() {
             while(elevio_stopButton()){
                 
             }
-
             elevio_stopLamp(0);
             break; 
 

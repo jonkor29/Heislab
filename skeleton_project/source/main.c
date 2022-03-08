@@ -7,6 +7,7 @@
 #include "LinkedList.h"
 #include "FiniteStateMachine.h"
 
+
 int main(){
     elevio_init(); //spoor studass: hvorfor staar det at denne ikke blir aapnet?
 
