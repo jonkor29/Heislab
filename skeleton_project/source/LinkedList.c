@@ -22,7 +22,6 @@ void append(Node** p_head, Order new_order) {
     return;
 }
 
-
 void delete_all_orders(Node** p_head) {
     Node* head = *p_head;
     while(head != NULL) {
@@ -82,7 +81,6 @@ int contains_order(Node** p_head, Order current_order) {
 
     return 0;
 }
-
 
 void print_list(Node* node) {
     printf("[");
