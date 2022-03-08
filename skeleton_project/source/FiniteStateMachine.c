@@ -21,27 +21,7 @@ void look_for_and_add_order(Node** p_head) {
                 Order new_order;
                 new_order.floor = (Floor)f; //Is this cast problematic? Not readable?
                 new_order.type = (ButtonType)b;
-                
-                
-                /*
-
-                switch (b) //this may be replaced by a single line if we cast b from int to ButtonType, readability?
-                {
-                case BUTTON_HALL_UP:
-                    new_order.type = UP;
-                    break;
-                case BUTTON_HALL_DOWN:
-                    new_order.type = DOWN;
-                    break;
-                case BUTTON_CAB:
-                    new_order.type = CAB;
-                    break;
-                }
-
-                */
             
-                
-
                 if (!contains_order(p_head, new_order)) {
                     append(p_head, new_order);
                 } 
@@ -49,6 +29,21 @@ void look_for_and_add_order(Node** p_head) {
         }
     }
 }
+
+/*
+switch (b) //this may be replaced by a single line if we cast b from int to ButtonType, readability?
+{
+case BUTTON_HALL_UP:
+    new_order.type = UP;
+    break;
+case BUTTON_HALL_DOWN:
+    new_order.type = DOWN;
+    break;
+case BUTTON_CAB:
+    new_order.type = CAB;
+    break;
+}
+*/
 
 void update_order_lights(Node** p_head) {
     for(int f = 0; f < N_FLOORS; f++) {
@@ -71,7 +66,7 @@ void run_elevator() {
     Node* head = NULL;
     Order current_order;
     Floor current_floor;
-    State prev_state = IDLE;
+    State stopped_in_state = IDLE;
 
     update_order_lights(&head);    
     init_FSM();
@@ -98,19 +93,16 @@ void run_elevator() {
                     } else if(current_order.floor > current_floor) {
                         state = MOVING_UP;
                     } else if(current_order.floor == current_floor) {
-                        state = DOORS_OPEN;
                 
-                        switch (prev_state) {
+                        switch (stopped_in_state) {
                         case MOVING_DOWN:
                             state = MOVING_UP;
                             break;
                         case MOVING_UP:
                             state = MOVING_DOWN;
                             break;
-                        case DOORS_OPEN:
-                            state = DOORS_OPEN;
-                            break;
                         default:
+                            state = DOORS_OPEN;
                             break;
                         }
                     }
@@ -130,7 +122,7 @@ void run_elevator() {
 
                 int floor_sensor_reading = elevio_floorSensor();
                 if (floor_sensor_reading != -1) {    
-                    prev_state = MOVING_DOWN;
+                    stopped_in_state = MOVING_DOWN;
                     elevio_floorIndicator(floor_sensor_reading);
                     current_floor = (Floor)(floor_sensor_reading);
   
@@ -156,7 +148,7 @@ void run_elevator() {
 
                 int floor_sensor_reading = elevio_floorSensor(); //hva er best her? sample en gang eller flere?
                 if (floor_sensor_reading != -1) {
-                    prev_state = MOVING_UP;    
+                    stopped_in_state = MOVING_UP;    
                     elevio_floorIndicator(floor_sensor_reading);
                     current_floor = (Floor)(floor_sensor_reading);
   
@@ -174,7 +166,6 @@ void run_elevator() {
             break; 
 
         case DOORS_OPEN:
-            prev_state = DOORS_OPEN;
             elevio_motorDirection(DIRN_STOP);
             elevio_doorOpenLamp(1);                               
             delete_orders(&head, current_floor);
