@@ -22,6 +22,7 @@ void look_for_and_add_order(Node** p_head) {
                 new_order.floor = (Floor)f; //Is this cast problematic? Not readable?
                 new_order.type = (OrderType)b;
                 
+                
                 /*
 
                 switch (b) //this may be replaced by a single line if we cast b from int to ordertype, readability?
@@ -36,8 +37,10 @@ void look_for_and_add_order(Node** p_head) {
                     new_order.type = CAB;
                     break;
                 }
-            
+
                 */
+            
+                
 
                 if (!contains_order(p_head, new_order)) {
                     append(p_head, new_order);
@@ -119,7 +122,6 @@ void run_elevator() {
             break;
         
         case MOVING_DOWN:
-            prev_state = MOVING_DOWN; 
             elevio_motorDirection(DIRN_DOWN);
  
             while (state == MOVING_DOWN) {   
@@ -128,6 +130,7 @@ void run_elevator() {
 
                 int floor_sensor_reading = elevio_floorSensor();
                 if (floor_sensor_reading != -1) {    
+                    prev_state = MOVING_DOWN;
                     elevio_floorIndicator(floor_sensor_reading);
                     current_floor = (Floor)(floor_sensor_reading);
   
@@ -145,7 +148,6 @@ void run_elevator() {
             break;
         
         case MOVING_UP:
-            prev_state = MOVING_UP;
             elevio_motorDirection(DIRN_UP);
  
             while (state == MOVING_UP) {   
@@ -153,7 +155,8 @@ void run_elevator() {
                 update_order_lights(&head);
 
                 int floor_sensor_reading = elevio_floorSensor();
-                if (floor_sensor_reading != -1) {    
+                if (floor_sensor_reading != -1) {
+                    prev_state = MOVING_UP;    
                     elevio_floorIndicator(floor_sensor_reading);
                     current_floor = (Floor)(floor_sensor_reading);
   

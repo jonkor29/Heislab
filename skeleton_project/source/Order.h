@@ -1,7 +1,7 @@
 #pragma once
 
 #include "driver/elevio.h"
-
+//kun bruke an av dem, helst den fra elevio
 typedef enum {
     UP      = 0,
     DOWN    = 1,
