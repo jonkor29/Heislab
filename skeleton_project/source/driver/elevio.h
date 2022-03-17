@@ -1,3 +1,7 @@
+/**
+ * @file
+ * @brief A library for communicating with the model elevators at NTNU's "sanntidslab".
+ */
 #pragma once
 
 
@@ -18,12 +22,21 @@ typedef enum {
     BUTTON_CAB          = 2
 } ButtonType;
 
-//INIT
+/**
+ * @brief Initializes communication with the elevator.
+ */
 void elevio_init(void);
 
 //MOTOR
 //This function runs the elevator up/down/stops it based on MotorDirection.
 //The motor will keep going until the function is called again with stop
+
+
+/**
+ * @brief Runs the motor in the direction corresponding to @p dirn.
+ * 
+ * @param[in] dirn  instance of MotorDirection enum specifying which direction the motor should run.
+ */
 void elevio_motorDirection(MotorDirection dirn);
 
 // - - - LAMPS - - -

@@ -1,3 +1,8 @@
+/**
+ * @file
+ * @brief Implementation file for memory library
+ */
+
 #include <assert.h>
 #include <stdlib.h>
 #include <sys/types.h>
