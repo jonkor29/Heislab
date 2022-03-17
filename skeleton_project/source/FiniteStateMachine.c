@@ -23,7 +23,7 @@ void look_for_and_add_order(Node** p_head) {
                 new_order.type = (ButtonType)b;
             
                 if (!contains_order(p_head, new_order)) {
-                    append(p_head, new_order);
+                    append(p_head, new_order); 
                 } 
             }
         }
@@ -66,7 +66,7 @@ void run_elevator() {
     Node* head = NULL;
     Order current_order;
     Floor current_floor;
-    State stopped_in_state = IDLE;
+    State state_at_previous_floor = IDLE;
 
     update_order_lights(&head);    
     init_FSM();
@@ -93,7 +93,7 @@ void run_elevator() {
                         state = MOVING_UP;
                     } else if(current_order.floor == current_floor) {
                 
-                        switch (stopped_in_state) {
+                        switch (state_at_previous_floor) {
                         case MOVING_DOWN:
                             state = MOVING_UP;
                             break;
@@ -101,8 +101,8 @@ void run_elevator() {
                             state = MOVING_DOWN;
                             break;
                         default:
-                            state = DOORS_OPEN;
-                            break;
+                            state = DOORS_OPEN;  
+                            break; 
                         }
                     }
                 }  
@@ -121,7 +121,7 @@ void run_elevator() {
 
                 int floor_sensor_reading = elevio_floorSensor();
                 if (floor_sensor_reading != -1) {    
-                    stopped_in_state = MOVING_DOWN;
+                    state_at_previous_floor = MOVING_DOWN;
                     elevio_floorIndicator(floor_sensor_reading);
                     current_floor = (Floor)(floor_sensor_reading);
   
@@ -147,7 +147,7 @@ void run_elevator() {
 
                 int floor_sensor_reading = elevio_floorSensor(); //hva er best her? sample en gang eller flere?
                 if (floor_sensor_reading != -1) {
-                    stopped_in_state = MOVING_UP;    
+                    state_at_previous_floor = MOVING_UP;    
                     elevio_floorIndicator(floor_sensor_reading);
                     current_floor = (Floor)(floor_sensor_reading);
   
@@ -175,6 +175,8 @@ void run_elevator() {
             while (state == DOORS_OPEN) {
                 look_for_and_add_order(&head);
                 update_order_lights(&head);
+
+                state_at_previous_floor = DOORS_OPEN;
                 
                 if (elevio_stopButton()) {
                     state = EMERGENCY_STOP;
