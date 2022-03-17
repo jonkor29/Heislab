@@ -1,3 +1,8 @@
+/**
+ * @file
+ * @brief Implementation file for Linkedlist library.
+ */
+
 #include "LinkedList.h"
 
 //Dropper p-prefiks foran ord som head, last og next fordi det er godt kjent for programmerere at disse er pekere. Dette for å unngå forvirring.

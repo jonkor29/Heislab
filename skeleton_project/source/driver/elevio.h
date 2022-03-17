@@ -1,5 +1,5 @@
 /**
- * @file
+ * @file elevio.h
  * @brief A library for communicating with the elevator.
  */
 #pragma once
@@ -49,21 +49,21 @@ void elevio_buttonLamp(int floor, ButtonType button, int value);
 /**
  * @brief Turns on the floor indicator lamp on @p floor. Automatically turns off floor indicator lamp on previous floor.
  * 
- * @param[in] floor The floor on which to switch the light.
+ * @param[in] floor The floor on which to turn on the light.
  */
 void elevio_floorIndicator(int floor);
 
 /**
- * @brief Turns on/off the doorOpenLamp on @p floor.
+ * @brief Turns on/off the doorOpenLamp depending on @p value.
  * 
- * @param[in] floor The floor on which to switch the light.
+ * @param[in] value If @c 1 turn on light, if @c 0 turn of lamp.
  */
 void elevio_doorOpenLamp(int value);
 
 /**
  * @brief Turns on/off stop lamp given @p value.
  * 
- * @param[in] floor The floor on which to switch the light.
+ * @param[in] value If @c 1 turn on light, if @c 0 turn of lamp.
  */
 void elevio_stopLamp(int value);
 
@@ -74,28 +74,28 @@ void elevio_stopLamp(int value);
  * 
  * @param[in] button The @p button to poll on @p floor.
  * 
- * @return 1 if the @p button is being pressed, 0 otherwise. 
+ * @return @c 1 if the @p button at @p floor is being pressed, @c 0 otherwise. 
  */
 int elevio_callButton(int floor, ButtonType button);
 
 /**
  * @brief Polls floorsensor.
  * 
- * @return Floor number, with the first floor indexed at 0. If not at a floor, returns -1.
+ * @return Floor number, with the first floor indexed at @c 0. If not at a floor, returns @c -1.
  */
 int elevio_floorSensor(void);
 
 /**
  * @brief Polls stopbutton.
  * 
- * @return 1 if the stop button is being pressed, 0 otherwise. 
+ * @return @c 1 if the stop button is being pressed, @c 0 otherwise. 
  */
 int elevio_stopButton(void);
 
 /**
  * @brief Polls obstruction switch.
  * 
- * @return 1 if obstruction switch is active, 0 otherwise. 
+ * @return @c 1 if obstruction switch is active, @c 0 otherwise. 
  */
 int elevio_obstruction(void);
 
