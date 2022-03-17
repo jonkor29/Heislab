@@ -1,3 +1,7 @@
+/**
+ * @file
+ * @brief Order struct to store order given by Floor and ButtonType
+ */
 #pragma once
 #include "driver/elevio.h"
 //kun bruke an av dem, helst den fra elevio
