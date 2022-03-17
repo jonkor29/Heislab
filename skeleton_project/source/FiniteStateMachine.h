@@ -1,10 +1,9 @@
+/**
+ * @file
+ * @brief Finite state machine library to enable and run the elevator FSM.
+ */
 #pragma once
 #include "LinkedList.h"
-
-
-//tanke: kan lage en buttonAndSensorPoller klasse som poller alt og returnerer en struct InputFSM som input til FSM
-//Denne kan ha medlemsvariabler for alle de nødvendige knappene
-//denne klassen tar inn input fra polleren og setter alle outputs.
 
 typedef enum {
     IDLE = 0,
@@ -14,7 +13,26 @@ typedef enum {
     EMERGENCY_STOP = 4
 } State;
 
+/**
+ * @brief Initializes the FSM by running the elevator down to the nearest floor.
+ */
 void init_FSM();
-void look_for_and_add_order(Node** p_head); //take in pointer to list, and use list funcs to add new order if btn pressed and order not already in list
+
+/**
+ * @brief Polls all buttons and adds orders to the linked list, if they're not already present.
+ * 
+ * @param[in, out] p_head pointer to the head of the list
+ */
+void look_for_and_add_order(Node** p_head);
+
+/**
+ * @brief Updates order lights for all orders in the list to which @p p_head points.
+ * 
+ * @param[in, out] p_head pointer to the head of the list
+ */
 void update_order_lights(Node** p_head);
+
+/**
+ * @brief Runs the elevator.
+ */
 void run_elevator();

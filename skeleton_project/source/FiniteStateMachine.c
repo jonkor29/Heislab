@@ -1,3 +1,7 @@
+/**
+ * @file
+ * @brief Implementation of FSM library.
+ */
 #include "FiniteStateMachine.h"
 #include "driver/elevio.h"
 #include "Order.h"
