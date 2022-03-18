@@ -101,7 +101,7 @@ int main(){
     append(&g_head, myOrder2);
     append(&g_head, myOrder3);
 
-    update_current_order(&g_head,&test_update_funk);
+    update_current_order(&g_head,&test_update_funk); // denne finnes ikke lengreteste
     append(&g_head, test_update_funk);
 
     print_list(g_head);
