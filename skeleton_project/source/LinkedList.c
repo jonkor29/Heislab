@@ -43,24 +43,24 @@ void delete_orders(Node** pp_head, Floor current_floor) {
     Node* p_prev;
     
     while(p_temp != NULL && p_temp->order.floor == current_floor) {
-        *pp_head= p_temp->p_next;
+        *pp_head = p_temp->p_next;
         free(p_temp);
         p_temp = *pp_head;
     }
 
     while (p_temp != NULL) {   
-        while(p_temp != NULL && p_temp->order.floor!=current_floor) {
-            p_prev=p_temp;
-            p_temp=p_temp->p_next;
+        while(p_temp != NULL && p_temp->order.floor != current_floor) {
+            p_prev = p_temp;
+            p_temp = p_temp->p_next;
         }
 
         if(p_temp == NULL) {
             return;
         }
 
-        p_prev->p_next=p_temp->p_next;
+        p_prev->p_next = p_temp->p_next;
         free(p_temp);
-        p_temp= p_prev->p_next;    
+        p_temp = p_prev->p_next;    
     }
 
     return;
@@ -71,16 +71,16 @@ int contains_order(Node** pp_head, Order current_order) {
     Node* p_temp = *pp_head;
     Node* p_prev;
     
-    while(p_temp != NULL && (p_temp->order.floor!=current_order.floor || p_temp->order.type != current_order.type)) {
-        p_prev=p_temp;
-        p_temp=p_temp->p_next;
+    while(p_temp != NULL && (p_temp->order.floor != current_order.floor || p_temp->order.type != current_order.type)) {
+        p_prev = p_temp;
+        p_temp = p_temp->p_next;
     }
 
     if(p_temp == NULL) {
         return 0;
     }
 
-    if (p_temp->order.floor==current_order.floor && p_temp->order.type == current_order.type) {
+    if (p_temp->order.floor == current_order.floor && p_temp->order.type == current_order.type) {
         return 1;
     }  
 

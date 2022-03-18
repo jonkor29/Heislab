@@ -50,6 +50,6 @@ int contains_order(Node** pp_head, Order current_order);
 /**
  * @brief Prints out all the orders in the linkedlist where @p node is the head. Used for debugging. 
  * 
- * @param[in] node  The head of the linkedlist. 
+ * @param[in] p_node  The head of the linkedlist. 
  */
-void print_list(Node* node);
+void print_list(Node* p_node);
