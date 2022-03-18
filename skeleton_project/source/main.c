@@ -12,7 +12,7 @@
 
 int main(){
     
-    elevio_init(); //spoor studass: hvorfor staar det at denne ikke blir aapnet
+    //elevio_init(); //spoor studass: hvorfor staar det at denne ikke blir aapnet
     /*
     while(1){
 
@@ -25,7 +25,80 @@ int main(){
 
     }
     */
-   run_elevator();
+    //run_elevator();
+
+    Order myOrder1 = {BUTTON_HALL_DOWN, SECOND_FLOOR};
+    Order myOrder2 = {BUTTON_HALL_UP, SECOND_FLOOR};
+    Order myOrder3 = {BUTTON_CAB, THIRD_FLOOR};
+    Order myOrder4 = {BUTTON_HALL_DOWN, SECOND_FLOOR};
+    Order myOrder5 = {BUTTON_HALL_UP, THIRD_FLOOR};
+    Order myOrder6 = {BUTTON_CAB, SECOND_FLOOR};
+    Node* p_head = NULL;
+    /*
+    while(!elevio_stopButton()) {
+        look_for_and_add_order(&p_head);
+        update_order_lights(&p_head);
+    }
+    delete_all_orders(&p_head);
+    */
+
+    printf("---Test for append---\np_head contains:"); //gjort 
+    append(&p_head, myOrder1);
+    append(&p_head, myOrder2);
+    append(&p_head, myOrder3);
+    print_list(p_head);
+    printf(".\n");
+
+    printf("---Test for delete_orders at second floor---\np_head contains:"); //gjort
+    delete_orders(&p_head,SECOND_FLOOR);
+    print_list(p_head);
+    printf(".\n");
+
+    printf("---Border case, deleting orders at an empty floor---\np_head contains:"); //gjort 
+    delete_orders(&p_head,SECOND_FLOOR);
+    print_list(p_head);
+    printf(".\n");
+
+    append(&p_head, myOrder4);
+    append(&p_head, myOrder5);
+    append(&p_head, myOrder6);
+
+    printf("---Appended three new orders---\np_head contains:");  // trenger ikke å vise fram
+    print_list(p_head);
+    printf(".\n");
+
+    printf("---Test for contains_order---\np_head contains:");
+    print_list(p_head);
+    printf("\n");
+    printf("Does p_head contain myOrder2; %d .\n", contains_order(&p_head, myOrder2));
+    printf("Does p_head contain myOrder5; %d .\n", contains_order(&p_head, myOrder5));
+    printf(".\n");
+
+    printf("---Test for delete_all_orders---\np_head contains:"); //gjort
+    delete_all_orders(&p_head);
+    print_list(p_head);
+    printf(".\n");
+
+    printf("---Border case, using delete_orders on an empty linkedlist---\np_head contains:"); //gjort
+    delete_orders(&p_head,SECOND_FLOOR);
+    delete_orders(&p_head,FIRST_FLOOR);
+    print_list(p_head);
+    printf(".\n");
+
+    printf("---Border case, using delete_all_orders on an empty linkedlist---\np_head contains:"); //gjort 
+    delete_all_orders(&p_head);
+    print_list(p_head);
+    printf(".\n");
+
+    printf("---Border case, adding 2 simular orders---\np_head contains:"); // gjort 
+    append(&p_head, myOrder1);
+    append(&p_head, myOrder1);
+    print_list(p_head);
+    printf(".\n");
+
+
+    delete_all_orders(&p_head);
+
 
     //printf("floorSensor(): %d", elevio_floorSensor());    
 
@@ -92,69 +165,70 @@ int main(){
     Order myOrder7 = {CAB, FOURTH_FLOOR};
     Order test_update_funk;
 
-    Node* g_head = NULL;
+    Node* p_head = NULL;
 
 
     printf("\n\n\nlook_for_order():\n\n\n");
 
-    append(&g_head, myOrder);
-    append(&g_head, myOrder2);
-    append(&g_head, myOrder3);
+    append(&p_head, myOrder);
+    append(&p_head, myOrder2);
+    append(&p_head, myOrder3);
 
-    update_current_order(&g_head,&test_update_funk); // denne finnes ikke lengreteste
-    append(&g_head, test_update_funk);
+    update_current_order(&p_head,&test_update_funk); // denne finnes ikke lengre
+    append(&p_head, test_update_funk);
 
-    print_list(g_head);
+    print_list(p_head);
 
     printf("Before:\n"); 
-    print_list(g_head);
+    print_list(p_head);
 
     while(1) {
-        look_for_and_add_order(&g_head);
+        look_for_and_add_order(&p
+_head);
         if (elevio_stopButton()) 
         {
             break;
         }
     }
     
-    printf("\nAfter:\n"); print_list(g_head); printf("\n\n\n");
+    printf("\nAfter:\n"); print_list(p_head); printf("\n\n\n");
     
-    append(&g_head, myOrder4);
-    append(&g_head, myOrder5);
-    append(&g_head, myOrder6);
+    append(&p_head, myOrder4);
+    append(&p_head, myOrder5);
+    append(&p_head, myOrder6);
 
 
-    //printf("g_head: %d", g_head); 
-    //printf("g_head: %d", g_head);
+    //printf("p_head: %d", p_head); 
+    //printf("p_head: %d", p_head);
     printf("\n\n\nBEFORE DELETION\n\n\n");
-    printf("g_head->order.type: %d\n", g_head->order.type);
-    printf("g_head: %p \n", (void*) g_head);
+    printf("p_head->order.type: %d\n", p_head->order.type);
+    printf("p_head: %p \n", (void*) p_head);
 
-    print_list(g_head);
+    print_list(p_head);
 
-    if (contains_order(&g_head, myOrder6) && contains_order(&g_head, myOrder)) {
+    if (contains_order(&p_head, myOrder6) && contains_order(&p_head, myOrder)) {
         printf("contains order 6 and 1");
     }
-    printf("contains_order(&g_head, myOrder7): %d", contains_order(&g_head, myOrder7));
+    printf("contains_order(&p_head, myOrder7): %d", contains_order(&p_head, myOrder7));
 
-    //delete_all(&g_head);
+    //delete_all(&p_head);
 
     printf("\n\n\nAFTER DELETION - :)\n\n\n");
 
-    delete_floor(&g_head, SECOND_FLOOR);
+    delete_floor(&p_head, SECOND_FLOOR);
     
-    print_list(g_head);
+    print_list(p_head);
 
 
-    printf("g_head->order.type: %d\n", g_head->order.type);
-    printf("g_head: %p \n", (void*) g_head);
+    printf("p_head->order.type: %d\n", p_head->order.type);
+    printf("p_head: %p \n", (void*) p_head);
 
     
     
-    //delete_order(&g_head,3);
-    delete_all(&g_head);
+    delete_orders(&p_head,SECOND_FLOOR);
+    delete_all(&p_head);
 
-    print_list(g_head);
+    print_list(p_head);
 
 
     - - - -  - - - - - - -TESTCODE ABOVE - - - - - - - - -  - -
@@ -183,8 +257,11 @@ int main(){
     //to avoid memory leak error
     for (int i = 0; i < 3; i++)
     {
-        Node* temp = g_head;
-        g_head = g_head->next;
+        Node* temp = p
+_head;
+        p
+_head = p
+_head->next;
         free(temp);
     }
     
