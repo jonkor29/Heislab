@@ -23,7 +23,7 @@ void look_for_and_add_order(Node** pp_head) {
 
             if (btnPressed) {
                 Order new_order;
-                new_order.floor = (Floor)f; //Is this cast problematic? Not readable?
+                new_order.floor = (Floor)f;
                 new_order.type = (ButtonType)b;
             
                 if (!contains_order(pp_head, new_order)) {
@@ -34,27 +34,12 @@ void look_for_and_add_order(Node** pp_head) {
     }
 }
 
-/*
-switch (b) //this may be replaced by a single line if we cast b from int to ButtonType, readability?
-{
-case BUTTON_HALL_UP:
-    new_order.type = UP;
-    break;
-case BUTTON_HALL_DOWN:
-    new_order.type = DOWN;
-    break;
-case BUTTON_CAB:
-    new_order.type = CAB;
-    break;
-}
-*/
-
 void update_order_lights(Node** pp_head) {
     for(int f = 0; f < N_FLOORS; f++) {
         for(int b = 0; b < N_BUTTONS; b++) {            
             Order order;
-            order.floor = (Floor)f; //this cast may be problematic
-            order.type = (ButtonType)b; //what is more readable, this or switch-case?
+            order.floor = (Floor)f;
+            order.type = (ButtonType)b;
             
             if (contains_order(pp_head, order)) {
                 elevio_buttonLamp(f, order.type, 1);                
@@ -76,8 +61,8 @@ void run_elevator() {
     init_FSM();
     
 
-    while (1) {  
-        //kanskje denne if-statementen kan flyttes til inni hver state for raskere oppdatering?
+    while (1) {
+
         if (elevio_floorSensor() != -1) {
             current_floor = (Floor)(elevio_floorSensor());
         }
@@ -149,7 +134,7 @@ void run_elevator() {
                 look_for_and_add_order(&p_head);
                 update_order_lights(&p_head);
 
-                int floor_sensor_reading = elevio_floorSensor(); //hva er best her? sample en gang eller flere?
+                int floor_sensor_reading = elevio_floorSensor();
                 if (floor_sensor_reading != -1) {
                     state_at_previous_floor = MOVING_UP;    
                     elevio_floorIndicator(floor_sensor_reading);
