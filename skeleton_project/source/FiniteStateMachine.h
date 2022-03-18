@@ -21,16 +21,16 @@ void init_FSM();
 /**
  * @brief Polls all buttons and adds orders to the linked list, if they're not already present.
  * 
- * @param[in, out] p_head pointer to the head of the list
+ * @param[in, out] pp_head pointer to the head of the list
  */
-void look_for_and_add_order(Node** p_head);
+void look_for_and_add_order(Node** pp_head);
 
 /**
- * @brief Updates order lights for all orders in the list to which @p p_head points.
+ * @brief Updates order lights for all orders in the list to which @p pp_head points.
  * 
- * @param[in, out] p_head pointer to the head of the list
+ * @param[in, out] pp_head pointer to the head of the list
  */
-void update_order_lights(Node** p_head);
+void update_order_lights(Node** pp_head);
 
 /**
  * @brief Runs the elevator.

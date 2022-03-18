@@ -16,7 +16,7 @@ void init_FSM() {
     elevio_motorDirection(DIRN_STOP);
 }
 
-void look_for_and_add_order(Node** p_head) {
+void look_for_and_add_order(Node** pp_head) {
     for(int f = 0; f < N_FLOORS; f++) {
         for(int b = 0; b < N_BUTTONS; b++) {
             int btnPressed = elevio_callButton(f, b);
@@ -26,8 +26,8 @@ void look_for_and_add_order(Node** p_head) {
                 new_order.floor = (Floor)f; //Is this cast problematic? Not readable?
                 new_order.type = (ButtonType)b;
             
-                if (!contains_order(p_head, new_order)) {
-                    append(p_head, new_order); 
+                if (!contains_order(pp_head, new_order)) {
+                    append(pp_head, new_order); 
                 } 
             }
         }
@@ -49,14 +49,14 @@ case BUTTON_CAB:
 }
 */
 
-void update_order_lights(Node** p_head) {
+void update_order_lights(Node** pp_head) {
     for(int f = 0; f < N_FLOORS; f++) {
         for(int b = 0; b < N_BUTTONS; b++) {            
             Order order;
             order.floor = (Floor)f; //this cast may be problematic
             order.type = (ButtonType)b; //what is more readable, this or switch-case?
             
-            if (contains_order(p_head, order)) {
+            if (contains_order(pp_head, order)) {
                 elevio_buttonLamp(f, order.type, 1);                
             } else {
                 elevio_buttonLamp(f, order.type, 0);
@@ -67,12 +67,12 @@ void update_order_lights(Node** p_head) {
 
 void run_elevator() {
     State state = IDLE;
-    Node* head = NULL;
+    Node* p_head = NULL;
     Order current_order;
     Floor current_floor;
     State state_at_previous_floor = IDLE;
 
-    update_order_lights(&head);    
+    update_order_lights(&p_head);    
     init_FSM();
     
 
@@ -86,11 +86,11 @@ void run_elevator() {
         case IDLE:
 
             while (state == IDLE) {
-                look_for_and_add_order(&head);
-                update_order_lights(&head);
+                look_for_and_add_order(&p_head);
+                update_order_lights(&p_head);
 
-                if (head != NULL) {
-                    current_order = (*head).order;
+                if (p_head != NULL) {
+                    current_order = p_head->order;
                     if (current_order.floor < current_floor) {
                         state = MOVING_DOWN;
                     } else if(current_order.floor > current_floor) {
@@ -120,8 +120,8 @@ void run_elevator() {
             elevio_motorDirection(DIRN_DOWN);
  
             while (state == MOVING_DOWN) {   
-                look_for_and_add_order(&head);
-                update_order_lights(&head);
+                look_for_and_add_order(&p_head);
+                update_order_lights(&p_head);
 
                 int floor_sensor_reading = elevio_floorSensor();
                 if (floor_sensor_reading != -1) {    
@@ -132,7 +132,7 @@ void run_elevator() {
                     Order down_order = {BUTTON_HALL_DOWN, current_floor};
                     Order cab_order = {BUTTON_CAB, current_floor}; 
                     
-                    if (current_order.floor == floor_sensor_reading || contains_order(&head, down_order) || contains_order(&head, cab_order)) {
+                    if (current_order.floor == floor_sensor_reading || contains_order(&p_head, down_order) || contains_order(&p_head, cab_order)) {
                         state = DOORS_OPEN;     
                     } 
                 } 
@@ -146,8 +146,8 @@ void run_elevator() {
             elevio_motorDirection(DIRN_UP);
  
             while (state == MOVING_UP) {   
-                look_for_and_add_order(&head);
-                update_order_lights(&head);
+                look_for_and_add_order(&p_head);
+                update_order_lights(&p_head);
 
                 int floor_sensor_reading = elevio_floorSensor(); //hva er best her? sample en gang eller flere?
                 if (floor_sensor_reading != -1) {
@@ -158,7 +158,7 @@ void run_elevator() {
                     Order up_order = {BUTTON_HALL_UP, current_floor};
                     Order cab_order = {BUTTON_CAB, current_floor}; 
                     
-                    if (current_order.floor == floor_sensor_reading || contains_order(&head, up_order) || contains_order(&head, cab_order)) {
+                    if (current_order.floor == floor_sensor_reading || contains_order(&p_head, up_order) || contains_order(&p_head, cab_order)) {
                         state = DOORS_OPEN;     
                     } 
                 } 
@@ -171,14 +171,14 @@ void run_elevator() {
         case DOORS_OPEN:
             elevio_motorDirection(DIRN_STOP);
             elevio_doorOpenLamp(1);                               
-            delete_orders(&head, current_floor);
-            update_order_lights(&head);
+            delete_orders(&p_head, current_floor);
+            update_order_lights(&p_head);
  
             time_t start, end;
             start = time(NULL);
             while (state == DOORS_OPEN) {
-                look_for_and_add_order(&head);
-                update_order_lights(&head);
+                look_for_and_add_order(&p_head);
+                update_order_lights(&p_head);
 
                 state_at_previous_floor = DOORS_OPEN;
                 
@@ -205,7 +205,7 @@ void run_elevator() {
 
         case EMERGENCY_STOP:
             elevio_motorDirection(DIRN_STOP);
-            delete_all_orders(&head); 
+            delete_all_orders(&p_head); 
             elevio_stopLamp(1);
 
             if(elevio_floorSensor() != -1) {
@@ -227,6 +227,6 @@ void run_elevator() {
             break;
         }
     }
-    delete_all_orders(&head);
-    update_order_lights(&head);
+    delete_all_orders(&p_head);
+    update_order_lights(&p_head);
 }
